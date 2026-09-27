@@ -1,0 +1,53 @@
+---
+sidebar_position: 1
+title: "Docker Demo"
+---
+
+# Building interoperable tables using Apache XTable™ (Incubating) 
+This demo walks you through a fictional use case and the steps to add interoperability between table formats using Apache XTable™.
+For this purpose, a self-contained data infrastructure is brought up as Docker containers within your computer.
+
+
+## Pre-requisites
+* Install Docker in your local machine
+* Clone [Apache XTable™ (Incubating) GitHub repository](https://github.com/apache/incubator-xtable)
+
+:::note NOTE:
+This demo was tested in both x86-64 and AArch64 based macOS operating systems
+:::
+
+## Setting up Docker cluster
+After cloning the Apache XTable™ (Incubating) repository, change directory to `demo` and run the `start_demo.sh` script.
+This script builds Apache XTable™ (Incubating) jars required for the demo and then spins up docker containers to start a Jupyter notebook
+with Scala interpreter, Hive Metastore, Presto and Trino.
+
+```shell md title="shell"
+cd demo
+./start_demo.sh
+```
+
+The containers run in the background; the script prints the Jupyter notebook URL once the server is up.
+The XTable jars are built automatically on the first run; they can also be (re)built explicitly with the
+`build_demo.sh` script.
+
+When you are done with the demo, stop and remove the containers with the `stop_demo.sh` script.
+Pass `--reset-data` to also restore the seed datasets under `demo/data` to their original state
+so the demo can be re-run from scratch.
+
+```shell md title="shell"
+./stop_demo.sh --reset-data
+```
+
+### Accessing Services
+#### Trino
+You can access the local Trino container by running `docker exec -it trino trino`
+
+#### Presto
+You can access the local Presto container by running `docker exec -it presto presto-cli --server localhost:8082`
+
+#### Jupyter Notebook
+To access the notebook, look for a log line during startup that contains `To access the server, open this file in a 
+browser: ...  Or copy and paste one of these URLs: ...` and use the link that starts with http://127.0.0.1:8888/
+to open the notebook in your browser. 
+
+The demo is located at `work/demo.ipynb`. The notebook also includes helpful markdowns explaining the steps.
